@@ -49,7 +49,9 @@ export default async function MediaPage() {
                   <img src={url} alt={file.name} className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
                     <p className="text-xs truncate text-neutral-300" title={file.name}>{file.name}</p>
-                    <p className="text-xs text-neutral-500">{(file.metadata?.size / 1024).toFixed(1)} KB</p>
+                    <p className="text-xs text-neutral-500">
+                      {typeof file.metadata?.size === 'number' ? `${(file.metadata.size / 1024).toFixed(1)} KB` : 'Tamaño desconocido'}
+                    </p>
                   </div>
                 </div>
               )
