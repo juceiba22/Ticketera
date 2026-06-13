@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { logout } from './actions'
 import { createClient } from '@/utils/supabase/server'
-import { Calendar, LayoutDashboard, Settings, LogOut, Image } from 'lucide-react'
+import { Calendar, LayoutDashboard, Settings, LogOut, Image, ExternalLink } from 'lucide-react'
 import ToastProvider from '@/components/ui/ToastProvider'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -9,14 +9,17 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const { data: { user } } = await supabase.auth.getUser()
   
   let productoraNombre = "Productora"
+  let productoraId = ""
+  
   if (user) {
     const { data: productora } = await supabase
       .from('productoras')
-      .select('nombre')
+      .select('id, nombre')
       .eq('auth_user_id', user.id)
       .single()
     if (productora) {
       productoraNombre = productora.nombre
+      productoraId = productora.id
     }
   }
 
@@ -28,7 +31,18 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <div className="p-6 border-b border-neutral-800">
           <h2 className="text-xl font-bold tracking-tight">Portal Productoras</h2>
           <p className="text-sm text-neutral-500 mt-1 truncate">{productoraNombre}</p>
+          {productoraId && (
+            <Link 
+              href={`/productora/${productoraId}`} 
+              target="_blank" 
+              className="inline-flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300 mt-2 font-medium transition-colors"
+            >
+              <span>Ver perfil público</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </Link>
+          )}
         </div>
+
         
         <nav className="flex-1 p-4 space-y-2">
           <Link href="/dashboard" className="flex items-center gap-3 px-3 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-lg transition-colors">

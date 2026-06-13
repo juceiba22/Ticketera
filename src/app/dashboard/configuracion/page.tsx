@@ -1,10 +1,13 @@
 import { createClient } from '@/utils/supabase/server'
-import { updateBranding } from './actions'
 import BrandingForm from './BrandingForm'
 
 export const dynamic = 'force-dynamic';
 
-export default async function ConfiguracionPage({ searchParams }: { searchParams: { success?: string, error?: string } }) {
+export default async function ConfiguracionPage({ 
+  searchParams 
+}: { 
+  searchParams: Promise<{ success?: string, error?: string }> 
+}) {
   const supabase = await createClient()
   
   const { data: { user } } = await supabase.auth.getUser()
@@ -16,27 +19,28 @@ export default async function ConfiguracionPage({ searchParams }: { searchParams
     .eq('auth_user_id', user.id)
     .single()
 
+  const resolvedSearchParams = await searchParams
+
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
+    <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       <div>
         <h1 className="text-3xl font-bold">Configuración y Branding</h1>
         <p className="text-neutral-400 mt-1">Administra la información pública de tu productora.</p>
       </div>
 
-      {searchParams?.success && (
-        <div className="bg-green-900/50 text-green-400 p-4 rounded-xl text-sm">
+      {resolvedSearchParams?.success && (
+        <div className="bg-green-900/50 text-green-400 p-4 rounded-xl text-sm border border-green-800/30">
           Configuración guardada exitosamente.
         </div>
       )}
-      {searchParams?.error && (
-        <div className="bg-red-900/50 text-red-400 p-4 rounded-xl text-sm">
+      {resolvedSearchParams?.error && (
+        <div className="bg-red-900/50 text-red-400 p-4 rounded-xl text-sm border border-red-800/30">
           Hubo un error al guardar la configuración.
         </div>
       )}
 
-      <form action={updateBranding} className="bg-neutral-900 border border-neutral-800 p-6 md:p-8 rounded-2xl">
-        <BrandingForm productora={productora} />
-      </form>
+      <BrandingForm productora={productora} />
     </div>
   )
 }
+
