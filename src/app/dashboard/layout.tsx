@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { logout } from './actions'
 import { createClient } from '@/utils/supabase/server'
-import { Calendar, LayoutDashboard, Settings, LogOut } from 'lucide-react'
+import { Calendar, LayoutDashboard, Settings, LogOut, Image } from 'lucide-react'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -36,6 +36,14 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <Link href="/dashboard/eventos/nuevo" className="flex items-center gap-3 px-3 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-lg transition-colors">
             <Calendar className="w-5 h-5" />
             <span>Crear Evento</span>
+          </Link>
+          <Link href="/dashboard/media" className="flex items-center gap-3 px-3 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-lg transition-colors">
+            <Image className="w-5 h-5" />
+            <span>Media</span>
+          </Link>
+          <Link href="/dashboard/configuracion" className="flex items-center gap-3 px-3 py-2 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-lg transition-colors">
+            <Settings className="w-5 h-5" />
+            <span>Configuración</span>
           </Link>
         </nav>
 

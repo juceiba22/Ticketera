@@ -33,19 +33,22 @@ export default async function VentasPage({ params }: { params: { id: string } })
         </div>
         <div className="flex gap-4">
           <Link href="/dashboard" className="px-4 py-2 text-neutral-400 hover:text-white transition-colors">Volver</Link>
-          <Link href={`/evento/${evento.slug}`} target="_blank" className="px-4 py-2 bg-neutral-800 text-white rounded-lg hover:bg-neutral-700 transition-colors">Ver Landing</Link>
+          <Link href={`/preview/${evento.slug}`} target="_blank" className="px-4 py-2 bg-neutral-800 text-white rounded-lg hover:bg-neutral-700 transition-colors">Vista Previa</Link>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex space-x-1 border-b border-neutral-800">
-        <Link href={`/dashboard/eventos/${evento.id}`} className="px-4 py-3 border-b-2 border-transparent text-neutral-400 hover:text-white transition-colors">
+      <div className="flex overflow-x-auto space-x-1 border-b border-neutral-800 pb-1">
+        <Link href={`/dashboard/eventos/${evento.id}`} className="px-4 py-3 border-b-2 border-transparent text-neutral-400 hover:text-white transition-colors whitespace-nowrap">
           Información
         </Link>
-        <Link href={`/dashboard/eventos/${evento.id}/artistas`} className="px-4 py-3 border-b-2 border-transparent text-neutral-400 hover:text-white transition-colors">
+        <Link href={`/dashboard/eventos/${evento.id}/artistas`} className="px-4 py-3 border-b-2 border-transparent text-neutral-400 hover:text-white transition-colors whitespace-nowrap">
           Artistas
         </Link>
-        <Link href={`/dashboard/eventos/${evento.id}/ventas`} className="px-4 py-3 border-b-2 border-white text-white font-medium">
+        <Link href={`/dashboard/eventos/${evento.id}/landing`} className="px-4 py-3 border-b-2 border-transparent text-neutral-400 hover:text-white transition-colors whitespace-nowrap">
+          Constructor Landing
+        </Link>
+        <Link href={`/dashboard/eventos/${evento.id}/ventas`} className="px-4 py-3 border-b-2 border-white text-white font-medium whitespace-nowrap">
           Ventas
         </Link>
       </div>

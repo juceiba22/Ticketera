@@ -1,5 +1,6 @@
 import { createEvento } from '../actions'
 import Link from 'next/link'
+import EventUploaderFields from './EventUploaderFields'
 
 export default function NuevoEventoPage({ searchParams }: { searchParams: { error?: string } }) {
   return (
@@ -45,6 +46,7 @@ export default function NuevoEventoPage({ searchParams }: { searchParams: { erro
               <label className="block text-sm font-medium text-neutral-400 mb-1" htmlFor="estado">Estado</label>
               <select id="estado" name="estado" className="w-full px-4 py-2 bg-neutral-950 rounded-xl border border-neutral-800 focus:outline-none focus:ring-1 focus:ring-neutral-500 text-white">
                 <option value="draft">Borrador</option>
+                <option value="preview">Preview</option>
                 <option value="published">Publicado</option>
                 <option value="finished">Finalizado</option>
               </select>
@@ -61,17 +63,8 @@ export default function NuevoEventoPage({ searchParams }: { searchParams: { erro
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold border-b border-neutral-800 pb-2 pt-4">Diseño (Opcional)</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-1" htmlFor="flyer">Flyer URL (Imagen)</label>
-              <input id="flyer" name="flyer" type="url" placeholder="https://..." className="w-full px-4 py-2 bg-neutral-950 rounded-xl border border-neutral-800 focus:outline-none focus:ring-1 focus:ring-neutral-500 text-white" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-1" htmlFor="video">Video URL de Fondo</label>
-              <input id="video" name="video" type="url" placeholder="https://..." className="w-full px-4 py-2 bg-neutral-950 rounded-xl border border-neutral-800 focus:outline-none focus:ring-1 focus:ring-neutral-500 text-white" />
-            </div>
-          </div>
+          <h2 className="text-xl font-semibold border-b border-neutral-800 pb-2 pt-4">Diseño Visual</h2>
+          <EventUploaderFields />
         </div>
 
         <div className="pt-6">

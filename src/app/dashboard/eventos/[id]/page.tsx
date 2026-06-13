@@ -2,6 +2,7 @@ import { updateEvento, deleteEvento } from '../actions'
 import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import EventUploaderFields from '../nuevo/EventUploaderFields'
 
 export const dynamic = 'force-dynamic';
 
@@ -22,7 +23,6 @@ export default async function EditEventoPage({ params, searchParams }: { params:
   let formattedDate = ''
   if (evento.fecha_evento) {
     const d = new Date(evento.fecha_evento)
-    // format to YYYY-MM-DDThh:mm
     formattedDate = new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString().slice(0, 16)
   }
 
@@ -35,19 +35,22 @@ export default async function EditEventoPage({ params, searchParams }: { params:
         </div>
         <div className="flex gap-4">
           <Link href="/dashboard" className="px-4 py-2 text-neutral-400 hover:text-white transition-colors">Volver</Link>
-          <Link href={`/evento/${evento.slug}`} target="_blank" className="px-4 py-2 bg-neutral-800 text-white rounded-lg hover:bg-neutral-700 transition-colors">Ver Landing</Link>
+          <Link href={`/preview/${evento.slug}`} target="_blank" className="px-4 py-2 bg-neutral-800 text-white rounded-lg hover:bg-neutral-700 transition-colors">Vista Previa</Link>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex space-x-1 border-b border-neutral-800">
-        <Link href={`/dashboard/eventos/${evento.id}`} className="px-4 py-3 border-b-2 border-white text-white font-medium">
+      <div className="flex overflow-x-auto space-x-1 border-b border-neutral-800 pb-1">
+        <Link href={`/dashboard/eventos/${evento.id}`} className="px-4 py-3 border-b-2 border-white text-white font-medium whitespace-nowrap">
           Información
         </Link>
-        <Link href={`/dashboard/eventos/${evento.id}/artistas`} className="px-4 py-3 border-b-2 border-transparent text-neutral-400 hover:text-white transition-colors">
+        <Link href={`/dashboard/eventos/${evento.id}/artistas`} className="px-4 py-3 border-b-2 border-transparent text-neutral-400 hover:text-white transition-colors whitespace-nowrap">
           Artistas
         </Link>
-        <Link href={`/dashboard/eventos/${evento.id}/ventas`} className="px-4 py-3 border-b-2 border-transparent text-neutral-400 hover:text-white transition-colors">
+        <Link href={`/dashboard/eventos/${evento.id}/landing`} className="px-4 py-3 border-b-2 border-transparent text-neutral-400 hover:text-white transition-colors whitespace-nowrap">
+          Constructor Landing
+        </Link>
+        <Link href={`/dashboard/eventos/${evento.id}/ventas`} className="px-4 py-3 border-b-2 border-transparent text-neutral-400 hover:text-white transition-colors whitespace-nowrap">
           Ventas
         </Link>
       </div>
@@ -94,6 +97,7 @@ export default async function EditEventoPage({ params, searchParams }: { params:
               <label className="block text-sm font-medium text-neutral-400 mb-1" htmlFor="estado">Estado</label>
               <select id="estado" name="estado" defaultValue={evento.estado} className="w-full px-4 py-2 bg-neutral-950 rounded-xl border border-neutral-800 focus:outline-none focus:ring-1 focus:ring-neutral-500 text-white">
                 <option value="draft">Borrador</option>
+                <option value="preview">Preview</option>
                 <option value="published">Publicado</option>
                 <option value="finished">Finalizado</option>
               </select>
@@ -110,17 +114,8 @@ export default async function EditEventoPage({ params, searchParams }: { params:
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold border-b border-neutral-800 pb-2 pt-4">Diseño (Opcional)</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-1" htmlFor="flyer">Flyer URL (Imagen)</label>
-              <input id="flyer" name="flyer" type="url" defaultValue={evento.flyer_url || ''} className="w-full px-4 py-2 bg-neutral-950 rounded-xl border border-neutral-800 focus:outline-none focus:ring-1 focus:ring-neutral-500 text-white" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-1" htmlFor="video">Video URL de Fondo</label>
-              <input id="video" name="video" type="url" defaultValue={evento.video_url || ''} className="w-full px-4 py-2 bg-neutral-950 rounded-xl border border-neutral-800 focus:outline-none focus:ring-1 focus:ring-neutral-500 text-white" />
-            </div>
-          </div>
+          <h2 className="text-xl font-semibold border-b border-neutral-800 pb-2 pt-4">Diseño Visual</h2>
+          <EventUploaderFields defaultFlyer={evento.flyer_url || ''} defaultVideo={evento.video_url || ''} />
         </div>
 
         <div className="pt-6 flex gap-4">
