@@ -1,4 +1,4 @@
--- Crear tabla productoras
+------ Crear tabla productoras
 CREATE TABLE IF NOT EXISTS public.productoras (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre TEXT NOT NULL,
