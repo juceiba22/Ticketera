@@ -47,7 +47,7 @@ export default async function EventoLandingPage({ params }: { params: { slug: st
   return (
     <main className="min-h-screen bg-black">
       <div>
-        {renderSecciones.map((s: any, idx: number) => (
+        {renderSecciones.map((s: { id?: string; tipo: string; contenido_json?: { titulo?: string; texto?: string } }, idx: number) => (
           <RenderSection 
             key={s.id || idx}
             themeName={themeName}

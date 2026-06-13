@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
-import { UploadCloud, Loader2, Image as ImageIcon, Video } from 'lucide-react'
+import { UploadCloud, Loader2, Video } from 'lucide-react'
 
 interface FileUploaderProps {
   bucket: string
@@ -53,9 +53,10 @@ export default function FileUploader({
         .getPublicUrl(data.path)
 
       onUploadSuccess(publicUrlData.publicUrl)
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err)
-      setError(err.message || 'Ocurrió un error al subir el archivo.')
+      const message = err instanceof Error ? err.message : 'Ocurrió un error al subir el archivo.'
+      setError(message)
     } finally {
       setIsUploading(false)
     }

@@ -2,6 +2,16 @@ import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
+type Ticket = {
+  id: string
+  estado_pago?: string
+  monto?: number
+  email_comprador?: string
+  nombre_comprador?: string
+  created_at?: string
+  mercadopago_payment_id?: string
+}
+
 export const dynamic = 'force-dynamic';
 
 export default async function VentasPage({ params }: { params: { id: string } }) {
@@ -17,12 +27,12 @@ export default async function VentasPage({ params }: { params: { id: string } })
     notFound()
   }
 
-  const tickets = evento.tickets || []
+  const tickets: Ticket[] = evento.tickets || []
   
-  const aprobados = tickets.filter((t: any) => t.estado_pago === 'approved')
-  const pendientes = tickets.filter((t: any) => t.estado_pago === 'pending')
+  const aprobados = tickets.filter((t) => t.estado_pago === 'approved')
+  const pendientes = tickets.filter((t) => t.estado_pago === 'pending')
   
-  const recaudacion = aprobados.reduce((acc: number, curr: any) => acc + Number(curr.monto), 0)
+  const recaudacion = aprobados.reduce((acc, curr) => acc + Number(curr.monto), 0)
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 animate-fade-in">
@@ -89,19 +99,19 @@ export default async function VentasPage({ params }: { params: { id: string } })
                   </td>
                 </tr>
               )}
-              {tickets.map((t: any) => (
+              {tickets.map((t: Ticket) => (
                 <tr key={t.id} className="border-b border-neutral-800/50 hover:bg-neutral-800/20 transition-colors">
                   <td className="p-4">{t.email_comprador}</td>
                   <td className="p-4 font-medium">{t.nombre_comprador}</td>
                   <td className="p-4 text-neutral-400">
-                    {new Date(t.created_at).toLocaleDateString()}
+                    {t.created_at ? new Date(t.created_at).toLocaleDateString() : 'Sin fecha'}
                   </td>
                   <td className="p-4">${t.monto}</td>
                   <td className="p-4">
                     <span className={`px-2 py-1 text-xs rounded-full ${
                       t.estado_pago === 'approved' ? 'bg-green-900/50 text-green-400' : 'bg-yellow-900/50 text-yellow-500'
                     }`}>
-                      {t.estado_pago.toUpperCase()}
+                      {(t.estado_pago || 'pending').toUpperCase()}
                     </span>
                   </td>
                   <td className="p-4 text-xs font-mono text-neutral-500">{t.mercadopago_payment_id || '-'}</td>

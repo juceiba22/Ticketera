@@ -2,6 +2,20 @@ import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
 import { Edit, Eye, Trash2 } from 'lucide-react'
 
+type EventoTicket = {
+  id?: string
+  monto?: number
+}
+
+type DashboardEvent = {
+  id: string
+  nombre: string
+  slug: string
+  fecha_evento?: string
+  estado?: string
+  tickets?: EventoTicket[]
+}
+
 export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage() {
@@ -22,9 +36,9 @@ export default async function DashboardPage() {
   let totalTickets = 0
   let recaudacionTotal = 0
 
-  eventos?.forEach(evento => {
+  eventos?.forEach((evento: DashboardEvent) => {
     totalTickets += evento.tickets?.length || 0
-    evento.tickets?.forEach((t: any) => {
+    evento.tickets?.forEach((t) => {
       recaudacionTotal += Number(t.monto)
     })
   })
@@ -76,9 +90,9 @@ export default async function DashboardPage() {
                     </td>
                   </tr>
                 )}
-                {eventos?.map(evento => {
+                {eventos?.map((evento: DashboardEvent) => {
                   const cantTickets = evento.tickets?.length || 0
-                  const recaudacion = evento.tickets?.reduce((acc: number, t: any) => acc + Number(t.monto), 0) || 0
+                  const recaudacion = evento.tickets?.reduce((acc, t) => acc + Number(t.monto), 0) || 0
 
                   return (
                     <tr key={evento.id} className="border-b border-neutral-800/50 hover:bg-neutral-800/20 transition-colors">

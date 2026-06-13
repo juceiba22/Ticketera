@@ -2,12 +2,13 @@ import { NextResponse } from 'next/server';
 import { MercadoPagoConfig, Payment } from 'mercadopago';
 import { supabaseServer } from '@/lib/supabase';
 import { Resend } from 'resend';
-
+const MERCADOPAGO_ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESS_TOKEN as string;
+if (!MERCADOPAGO_ACCESS_TOKEN) {
+  throw new Error('Missing Mercado Pago access token');
+}
 const client = new MercadoPagoConfig({
-  accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN as string
+  accessToken: MERCADOPAGO_ACCESS_TOKEN
 });
-
-const resend = new Resend(process.env.RESEND_API_KEY as string);
 
 export async function POST(req: Request) {
   try {
@@ -45,7 +46,12 @@ export async function POST(req: Request) {
                 fechaFormateada = `${fecha.getDate()} de ${meses[fecha.getMonth()]}`;
               }
 
-              await resend.emails.send({
+              const resendApiKey = process.env.RESEND_API_KEY;
+              if (!resendApiKey) {
+                console.warn('Skipping welcome email: RESEND_API_KEY not configured.');
+              } else {
+                const resend = new Resend(resendApiKey);
+                await resend.emails.send({
                 from: 'Fiesta Pagana <onboarding@resend.dev>',
                 to: updatedTicket.email_comprador,
                 subject: `¡Bienvenido a ${updatedTicket.evento.nombre}! – Tu entrada está confirmada`,
@@ -76,6 +82,7 @@ export async function POST(req: Request) {
                   </div>
                 `
               });
+              }
               console.log('Email de bienvenida enviado a:', updatedTicket.email_comprador);
             } catch (emailError) {
               console.error('Error enviando email via Resend:', emailError);

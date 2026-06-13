@@ -3,7 +3,6 @@ import { Resend } from 'resend';
 import { supabaseServer } from '@/lib/supabase';
 import crypto from 'crypto';
 
-const resend = new Resend(process.env.RESEND_API_KEY as string);
 const SECRET = process.env.OTP_SECRET || 'secret-pagana-2026';
 
 export async function POST(req: Request) {
@@ -41,7 +40,12 @@ export async function POST(req: Request) {
     // Create a hash token
     const token = crypto.createHmac('sha256', SECRET).update(email + code).digest('hex');
 
-    // Send email via Resend
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (!resendApiKey) {
+      return NextResponse.json({ error: 'Missing RESEND_API_KEY' }, { status: 500 });
+    }
+
+    const resend = new Resend(resendApiKey);
     const resendResponse = await resend.emails.send({
       from: 'Fiesta Pagana <onboarding@resend.dev>',
       to: email,

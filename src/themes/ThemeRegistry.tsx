@@ -1,11 +1,40 @@
 import React from 'react'
 
+type EventoData = {
+  id?: string
+  nombre?: string
+  fecha_evento?: string
+  precio_general?: number
+  video_url?: string
+  theme?: { name?: string } | null
+}
+
+type ArtistaData = {
+  id?: string
+  nombre?: string
+}
+
+type ProductoraData = {
+  instagram?: string
+  whatsapp?: string
+  email?: string
+}
+
+type SeccionData = {
+  id?: string
+  tipo: string
+  contenido_json?: {
+    titulo?: string
+    texto?: string
+  }
+}
+
 // Common props for all sections
 export interface SectionProps {
-  evento: any
-  artistas?: any[]
-  productora?: any
-  seccion: any // contains contenido_json and other data
+  evento: EventoData
+  artistas?: ArtistaData[]
+  productora?: ProductoraData
+  seccion: SeccionData
 }
 
 // Simple fallback components if a theme doesn't implement a section

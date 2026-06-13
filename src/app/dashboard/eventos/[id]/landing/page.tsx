@@ -26,7 +26,7 @@ export default async function LandingBuilderPage({ params }: { params: { id: str
     .eq('evento_id', evento.id)
     .order('orden', { ascending: true })
 
-  const currentTheme = typeof evento.theme === 'object' && evento.theme !== null ? (evento.theme as any).name || 'dark' : 'dark'
+  const currentTheme = typeof evento.theme === 'object' && evento.theme !== null ? (evento.theme as { name?: string }).name || 'dark' : 'dark'
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">

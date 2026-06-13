@@ -50,7 +50,7 @@ export default async function PreviewPage({ params }: { params: { slug: string }
       </div>
       
       <div className="pt-8">
-        {renderSecciones.map((s: any, idx: number) => (
+        {renderSecciones.map((s: { id?: string; tipo: string; contenido_json?: { titulo?: string; texto?: string } }, idx: number) => (
           <RenderSection 
             key={s.id || idx}
             themeName={themeName}

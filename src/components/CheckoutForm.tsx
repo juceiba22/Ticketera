@@ -4,11 +4,16 @@ import { useState } from 'react';
 
 interface CheckoutFormProps {
   eventoId: string;
-  eventoSlug: string;
-  theme?: any;
+  precio?: number;
+  theme?: {
+    primaryColor?: string;
+    secondaryColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+  };
 }
 
-export default function CheckoutForm({ eventoId, eventoSlug, theme }: CheckoutFormProps) {
+export default function CheckoutForm({ eventoId, precio, theme }: CheckoutFormProps) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');

@@ -3,7 +3,16 @@
 import FileUploader from '@/components/ui/FileUploader'
 import { useState } from 'react'
 
-export default function BrandingForm({ productora }: { productora: any }) {
+type Productora = {
+  id: string
+  logo_url?: string
+  nombre?: string
+  email?: string
+  instagram?: string
+  whatsapp?: string
+}
+
+export default function BrandingForm({ productora }: { productora: Productora }) {
   const [logoUrl, setLogoUrl] = useState(productora.logo_url || '')
 
   return (
