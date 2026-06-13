@@ -1,15 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/evento/fiesta-pagana',
-        permanent: false,
-      },
-    ]
-  },
+  // Configuración de Next.js
 };
 
 export default nextConfig;
