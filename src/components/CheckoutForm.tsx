@@ -122,8 +122,7 @@ export default function CheckoutForm({ eventoId, eventoSlug, theme }: CheckoutFo
             type="text"
             required
             placeholder="Tu nombre completo"
-            className="w-full px-4 py-3 bg-neutral-950 text-white rounded-xl border border-neutral-800 focus:outline-none focus:ring-1 transition-all font-light placeholder:text-neutral-600"
-            style={{ focusRingColor: primaryColor }}
+            className="w-full px-4 py-3 bg-neutral-950 text-white rounded-xl border border-neutral-800 focus:outline-none focus:ring-1 focus:ring-neutral-500 transition-all font-light placeholder:text-neutral-600"
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
           />
