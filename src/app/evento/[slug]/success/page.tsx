@@ -15,11 +15,10 @@ interface SuccessPageProps {
 }
 
 export default async function SuccessPage({ params, searchParams }: SuccessPageProps) {
-  const supabase = await createClient();
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
 
-  const { data: evento, error } = await supabase
+  const { data: evento, error } = await supabaseServer
     .from('eventos')
     .select('*')
     .eq('slug', resolvedParams.slug)
