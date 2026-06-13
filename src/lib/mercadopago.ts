@@ -4,7 +4,13 @@ const client = new MercadoPagoConfig({
     accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN as string
 });
 
-export const requestPreference = async (name: string, email: string, ticketId: string) => {
+interface EventDetails {
+    nombre: string;
+    precio: number;
+    slug: string;
+}
+
+export const requestPreference = async (name: string, email: string, ticketId: string, event: EventDetails) => {
 
     const preference = new Preference(client);
 
@@ -13,10 +19,10 @@ export const requestPreference = async (name: string, email: string, ticketId: s
             body: {
                 items: [
                     {
-                        id: 'TICKET_FIESTA_PAGANA_01',
-                        title: 'Entrada General - Fiesta Pagana',
+                        id: `TICKET_${event.slug.toUpperCase()}`,
+                        title: `Entrada General - ${event.nombre}`,
                         quantity: 1,
-                        unit_price: 5000, // Precio ajustado para evitar restricciones de monto mínimo de Mercado Pago
+                        unit_price: Number(event.precio),
                         currency_id: 'ARS',
                     }
                 ],
@@ -25,13 +31,13 @@ export const requestPreference = async (name: string, email: string, ticketId: s
                     email,
                 },
                 back_urls: {
-                    success: `${process.env.NEXT_PUBLIC_SITE_URL}/success`,
-                    failure: `${process.env.NEXT_PUBLIC_SITE_URL}/`,
-                    pending: `${process.env.NEXT_PUBLIC_SITE_URL}/`,
+                    success: `${process.env.NEXT_PUBLIC_SITE_URL}/evento/${event.slug}/success`,
+                    failure: `${process.env.NEXT_PUBLIC_SITE_URL}/evento/${event.slug}`,
+                    pending: `${process.env.NEXT_PUBLIC_SITE_URL}/evento/${event.slug}`,
                 },
                 auto_return: 'all',
                 notification_url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/webhook`,
-                external_reference: ticketId // Guardaremos el email para identificar la transacción en el webhook
+                external_reference: ticketId // Guardaremos el ID para identificar la transacción en el webhook
             }
         });
 

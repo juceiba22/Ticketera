@@ -7,9 +7,9 @@ const SECRET = process.env.OTP_SECRET || 'secret-pagana-2026';
 
 export async function POST(req: Request) {
   try {
-    const { nombre, email, token, code } = await req.json();
+    const { nombre, email, token, code, eventoId } = await req.json();
 
-    if (!nombre || !email || !token || !code) {
+    if (!nombre || !email || !token || !code || !eventoId) {
       return NextResponse.json({ error: 'Faltan datos' }, { status: 400 });
     }
 
@@ -28,16 +28,32 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Código de verificación incorrecto' }, { status: 400 });
     }
 
-    // Si ya existe un pending para este email, reutilizarlo
+    // Obtener información del evento
+    const { data: evento, error: eventoError } = await supabaseServer
+      .from('eventos')
+      .select('nombre, precio_general, slug')
+      .eq('id', eventoId)
+      .single();
+
+    if (eventoError || !evento) {
+      return NextResponse.json({ error: 'Evento no encontrado' }, { status: 404 });
+    }
+
+    // Si ya existe un pending para este email en este evento, reutilizarlo
     const { data: existing } = await supabaseServer
       .from('tickets')
       .select('id')
       .eq('email_comprador', email)
+      .eq('evento_id', eventoId)
       .eq('estado_pago', 'pending')
       .single();
 
     if (existing) {
-      const initPointUrl = await requestPreference(nombre, email, existing.id);
+      const initPointUrl = await requestPreference(nombre, email, existing.id, {
+        nombre: evento.nombre,
+        precio: evento.precio_general,
+        slug: evento.slug
+      });
       return NextResponse.json({ url: initPointUrl });
     }
 
@@ -48,7 +64,8 @@ export async function POST(req: Request) {
         nombre_comprador: nombre,
         email_comprador: email,
         estado_pago: 'pending',
-        monto: 100,
+        monto: evento.precio_general,
+        evento_id: eventoId
       })
       .select('id')
       .single();
@@ -58,7 +75,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Error guardando en BD' }, { status: 500 });
     }
 
-    const initPointUrl = await requestPreference(nombre, email, ticket.id);
+    const initPointUrl = await requestPreference(nombre, email, ticket.id, {
+      nombre: evento.nombre,
+      precio: evento.precio_general,
+      slug: evento.slug
+    });
 
     return NextResponse.json({ url: initPointUrl });
   } catch (err) {

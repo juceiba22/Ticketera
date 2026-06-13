@@ -6,7 +6,7 @@ export default async function AdminDashboard() {
 
   const { data: tickets, error } = await supabaseServer
     .from('tickets')
-    .select('*')
+    .select('*, evento:eventos(nombre)')
     .order('created_at', { ascending: false });
 
   if (error) return <div>Error cargando datos: {error.message}</div>;
@@ -33,6 +33,7 @@ export default async function AdminDashboard() {
         <table className="w-full text-left">
           <thead className="bg-neutral-950 border-b border-neutral-800 text-neutral-400 text-sm font-light">
             <tr>
+              <th className="p-4">Evento</th>
               <th className="p-4">Email</th>
               <th className="p-4">Nombre</th>
               <th className="p-4">Estado</th>
@@ -42,11 +43,12 @@ export default async function AdminDashboard() {
           <tbody>
             {!tickets?.length && (
               <tr>
-                <td colSpan={4} className="p-4 text-center text-neutral-500">No hay tickets.</td>
+                <td colSpan={5} className="p-4 text-center text-neutral-500">No hay tickets.</td>
               </tr>
             )}
             {tickets?.map(t => (
               <tr key={t.id} className="border-b border-neutral-800/50">
+                <td className="p-4">{t.evento?.nombre || '-'}</td>
                 <td className="p-4">{t.email_comprador}</td>
                 <td className="p-4">{t.nombre_comprador}</td>
                 <td className="p-4">
