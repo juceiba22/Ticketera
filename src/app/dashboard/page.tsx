@@ -112,7 +112,7 @@ export default async function DashboardPage() {
                         {cantTickets} tickets (${recaudacion})
                       </td>
                       <td className="p-4 text-right space-x-2">
-                        <Link href={`/evento/${evento.slug}`} target="_blank" className="inline-flex p-2 text-neutral-400 hover:text-white bg-neutral-800 hover:bg-neutral-700 rounded-lg transition-colors" title="Ver Landing">
+                        <Link href={evento.estado === 'published' ? `/evento/${evento.slug}` : `/preview/${evento.slug}`} target="_blank" className="inline-flex p-2 text-neutral-400 hover:text-white bg-neutral-800 hover:bg-neutral-700 rounded-lg transition-colors" title={evento.estado === 'published' ? "Ver Landing Pública" : "Vista Previa"}>
                           <Eye className="w-4 h-4" />
                         </Link>
                         <Link href={`/dashboard/eventos/${evento.id}`} className="inline-flex p-2 text-neutral-400 hover:text-white bg-neutral-800 hover:bg-neutral-700 rounded-lg transition-colors" title="Editar">

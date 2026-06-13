@@ -14,13 +14,14 @@ type Ticket = {
 
 export const dynamic = 'force-dynamic';
 
-export default async function VentasPage({ params }: { params: { id: string } }) {
+export default async function VentasPage({ params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient()
+  const { id } = await params
   
   const { data: evento, error } = await supabase
     .from('eventos')
     .select('id, nombre, slug, tickets(*)')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (error || !evento) {

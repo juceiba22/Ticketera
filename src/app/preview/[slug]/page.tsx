@@ -5,14 +5,15 @@ import CheckoutForm from '@/components/CheckoutForm'
 
 export const dynamic = 'force-dynamic';
 
-export default async function PreviewPage({ params }: { params: { slug: string } }) {
+export default async function PreviewPage({ params }: { params: Promise<{ slug: string }> }) {
   const supabase = await createClient()
+  const { slug } = await params
 
   // 1. Fetch Event
   const { data: evento } = await supabase
     .from('eventos')
     .select('*, productoras(nombre, logo_url, instagram, whatsapp, email)')
-    .eq('slug', params.slug)
+    .eq('slug', slug)
     .single()
 
   if (!evento) notFound()

@@ -9,13 +9,14 @@ export const dynamic = 'force-dynamic';
 const AVAILABLE_THEMES = ['dark', 'rock', 'electronic', 'festival', 'corporate']
 const AVAILABLE_SECTIONS = ['hero', 'lineup', 'tickets', 'galeria', 'sponsors', 'faq', 'contacto']
 
-export default async function LandingBuilderPage({ params }: { params: { id: string } }) {
+export default async function LandingBuilderPage({ params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient()
+  const { id } = await params
   
   const { data: evento, error } = await supabase
     .from('eventos')
     .select('id, nombre, slug, theme')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (error || !evento) notFound()

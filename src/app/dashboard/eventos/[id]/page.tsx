@@ -6,13 +6,15 @@ import EventUploaderFields from '../nuevo/EventUploaderFields'
 
 export const dynamic = 'force-dynamic';
 
-export default async function EditEventoPage({ params, searchParams }: { params: { id: string }, searchParams: { error?: string, success?: string } }) {
+export default async function EditEventoPage({ params, searchParams }: { params: Promise<{ id: string }>, searchParams: Promise<{ error?: string, success?: string }> }) {
   const supabase = await createClient()
+  const resolvedParams = await params
+  const resolvedSearchParams = await searchParams
   
   const { data: evento, error } = await supabase
     .from('eventos')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', resolvedParams.id)
     .single()
 
   if (error || !evento) {
@@ -55,12 +57,12 @@ export default async function EditEventoPage({ params, searchParams }: { params:
         </Link>
       </div>
 
-      {searchParams?.error && (
+      {resolvedSearchParams?.error && (
         <div className="bg-red-900/50 text-red-400 p-4 rounded-xl text-sm">
           Hubo un error al actualizar el evento.
         </div>
       )}
-      {searchParams?.success && (
+      {resolvedSearchParams?.success && (
         <div className="bg-green-900/50 text-green-400 p-4 rounded-xl text-sm">
           Evento actualizado exitosamente.
         </div>

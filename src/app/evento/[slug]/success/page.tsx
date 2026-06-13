@@ -8,15 +8,21 @@ interface SuccessPageProps {
   params: Promise<{
     slug: string;
   }>;
+  searchParams: Promise<{
+    payment_id: string;
+    external_reference: string;
+  }>;
 }
 
-export default async function SuccessPage({ params }: SuccessPageProps) {
-  const { slug } = await params;
+export default async function SuccessPage({ params, searchParams }: SuccessPageProps) {
+  const supabase = await createClient();
+  const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
 
-  const { data: evento, error } = await supabaseServer
+  const { data: evento, error } = await supabase
     .from('eventos')
     .select('*')
-    .eq('slug', slug)
+    .eq('slug', resolvedParams.slug)
     .single();
 
   if (error || !evento) {
@@ -46,6 +52,18 @@ export default async function SuccessPage({ params }: SuccessPageProps) {
         >
           ¡ENTRADA CONFIRMADA!
         </h1>
+        <div className="bg-neutral-900 border border-neutral-800 p-8 rounded-2xl">
+          <div className="space-y-4 text-left">
+            <div className="flex justify-between border-b border-neutral-800 pb-2">
+              <span className="text-neutral-400">Referencia:</span>
+              <span className="font-mono">{resolvedSearchParams?.external_reference || 'N/A'}</span>
+            </div>
+            <div className="flex justify-between border-b border-neutral-800 pb-2">
+              <span className="text-neutral-400">Pago ID:</span>
+              <span className="font-mono">{resolvedSearchParams?.payment_id || 'N/A'}</span>
+            </div>
+          </div>
+        </div>
         <p className="font-light text-lg" style={{ color: theme.secondaryColor }}>
           Te enviamos los detalles por email. {fechaFormateada ? `Nos vemos el ${fechaFormateada}.` : 'Nos vemos pronto.'}
         </p>
