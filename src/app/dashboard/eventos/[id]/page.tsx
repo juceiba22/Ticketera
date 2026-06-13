@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import EventUploaderFields from '../nuevo/EventUploaderFields'
+import ConfirmButton from '@/components/ui/ConfirmButton'
 
 export const dynamic = 'force-dynamic';
 
@@ -130,9 +131,13 @@ export default async function EditEventoPage({ params, searchParams }: { params:
       <div className="pt-10 border-t border-neutral-800">
         <form action={deleteEvento}>
            <input type="hidden" name="id" value={evento.id} />
-           <button type="submit" className="px-4 py-2 bg-red-900/30 text-red-500 hover:bg-red-900/50 transition-colors rounded-lg font-medium" onClick={(e) => { if(!confirm('¿Seguro que deseas eliminar este evento?')) e.preventDefault() }}>
-             Eliminar Evento
-           </button>
+           <ConfirmButton 
+             className="px-4 py-2 bg-red-900/30 text-red-500 hover:bg-red-900/50 transition-colors rounded-lg font-medium"
+             buttonContent="Eliminar Evento"
+             confirmTitle="Eliminar Evento"
+             confirmMessage={`¿Estás seguro que deseas eliminar "${evento.nombre}"? Esta acción no se puede deshacer y se borrarán todos los artistas y datos asociados.`}
+             confirmText="Eliminar"
+           />
         </form>
       </div>
     </div>

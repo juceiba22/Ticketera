@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { addArtista, deleteArtista, editArtista } from './actions'
 import { Trash2 } from 'lucide-react'
 import ArtistImageUploader from './ArtistImageUploader'
+import ConfirmButton from '@/components/ui/ConfirmButton'
 
 export const dynamic = 'force-dynamic';
 
@@ -84,7 +85,15 @@ export default async function ArtistasPage({ params }: { params: Promise<{ id: s
               </div>
               
               <div className="flex gap-2 w-full justify-end border-t border-neutral-900 pt-3">
-                <button formAction={deleteArtista} className="px-4 py-2 bg-red-900/30 text-red-500 rounded-lg hover:bg-red-900/50 transition-colors"><Trash2 className="w-5 h-5"/></button>
+                <input type="hidden" name="evento_id" value={evento.id} />
+                <ConfirmButton 
+                  formAction={deleteArtista}
+                  className="p-2 bg-red-900/30 text-red-500 rounded-lg hover:bg-red-900/50 transition-colors flex items-center justify-center"
+                  buttonContent={<Trash2 className="w-5 h-5"/>}
+                  confirmTitle="Eliminar Artista"
+                  confirmMessage={`¿Estás seguro que deseas eliminar a ${artista.nombre}?`}
+                  confirmText="Eliminar"
+                />
                 <button type="submit" className="px-6 py-2 bg-white text-black font-semibold rounded-lg hover:bg-neutral-200 transition-colors">Guardar</button>
               </div>
             </form>

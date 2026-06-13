@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { logout } from './actions'
 import { createClient } from '@/utils/supabase/server'
 import { Calendar, LayoutDashboard, Settings, LogOut, Image } from 'lucide-react'
+import ToastProvider from '@/components/ui/ToastProvider'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -21,6 +22,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col md:flex-row">
+      <ToastProvider />
       {/* Sidebar */}
       <aside className="w-full md:w-64 bg-neutral-950 border-b md:border-b-0 md:border-r border-neutral-800 flex flex-col">
         <div className="p-6 border-b border-neutral-800">
