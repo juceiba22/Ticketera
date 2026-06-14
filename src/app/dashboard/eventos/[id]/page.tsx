@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import EventUploaderFields from '../nuevo/EventUploaderFields'
 import ConfirmButton from '@/components/ui/ConfirmButton'
+import SubmitButton from '@/components/ui/SubmitButton'
 
 export const dynamic = 'force-dynamic';
 
@@ -122,9 +123,9 @@ export default async function EditEventoPage({ params, searchParams }: { params:
         </div>
 
         <div className="pt-6 flex gap-4">
-          <button type="submit" className="flex-1 py-3 bg-white text-black font-semibold rounded-xl hover:bg-neutral-200 transition-colors">
+          <SubmitButton className="flex-1 py-3 bg-white text-black font-semibold rounded-xl hover:bg-neutral-200 transition-colors">
             Guardar Cambios
-          </button>
+          </SubmitButton>
         </div>
       </form>
       

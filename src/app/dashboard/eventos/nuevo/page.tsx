@@ -1,8 +1,15 @@
 import { createEvento } from '../actions'
 import Link from 'next/link'
 import EventUploaderFields from './EventUploaderFields'
+import SubmitButton from '@/components/ui/SubmitButton'
 
-export default function NuevoEventoPage({ searchParams }: { searchParams: { error?: string } }) {
+export default async function NuevoEventoPage({ 
+  searchParams 
+}: { 
+  searchParams: Promise<{ error?: string }> 
+}) {
+  const resolvedSearchParams = await searchParams
+
   return (
     <div className="max-w-2xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-center justify-between">
@@ -10,7 +17,7 @@ export default function NuevoEventoPage({ searchParams }: { searchParams: { erro
         <Link href="/dashboard" className="text-neutral-400 hover:text-white transition-colors">Volver</Link>
       </div>
 
-      {searchParams?.error && (
+      {resolvedSearchParams?.error && (
         <div className="bg-red-900/50 text-red-400 p-4 rounded-xl text-sm">
           Hubo un error al crear el evento. Revisa que el slug sea único y todos los datos estén correctos.
         </div>
@@ -68,9 +75,9 @@ export default function NuevoEventoPage({ searchParams }: { searchParams: { erro
         </div>
 
         <div className="pt-6">
-          <button type="submit" className="w-full py-3 bg-white text-black font-semibold rounded-xl hover:bg-neutral-200 transition-colors">
+          <SubmitButton className="w-full py-3 bg-white text-black font-semibold rounded-xl hover:bg-neutral-200 transition-colors">
             Guardar y Continuar
-          </button>
+          </SubmitButton>
         </div>
       </form>
     </div>

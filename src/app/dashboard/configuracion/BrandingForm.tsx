@@ -4,6 +4,7 @@ import FileUploader from '@/components/ui/FileUploader'
 import { useState } from 'react'
 import { Building, Mail, MessageCircle, ExternalLink } from 'lucide-react'
 import { updateBranding } from './actions'
+import SubmitButton from '@/components/ui/SubmitButton'
 
 const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -112,9 +113,9 @@ export default function BrandingForm({ productora }: { productora: Productora })
         </div>
         
         <div className="pt-4 border-t border-neutral-800">
-          <button type="submit" className="px-6 py-3 bg-white text-black font-semibold rounded-xl hover:bg-neutral-200 transition-colors">
+          <SubmitButton className="px-6 py-3 bg-white text-black font-semibold rounded-xl hover:bg-neutral-200 transition-colors">
             Guardar Configuración
-          </button>
+          </SubmitButton>
         </div>
       </form>
 
