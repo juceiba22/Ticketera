@@ -6,6 +6,7 @@ type EventoData = {
   fecha_evento?: string
   precio_general?: number
   video_url?: string
+  flyer_url?: string
   theme?: { name?: string } | null
 }
 
@@ -40,9 +41,12 @@ export interface SectionProps {
 // Simple fallback components if a theme doesn't implement a section
 const DefaultHero = ({ evento, seccion }: SectionProps) => (
   <div className="relative min-h-[60vh] flex items-center justify-center bg-black text-white text-center p-6">
-    {evento.video_url && (
+    {evento.video_url ? (
       <video src={evento.video_url} autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-40" />
-    )}
+    ) : evento.flyer_url ? (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={evento.flyer_url} alt="Flyer" className="absolute inset-0 w-full h-full object-cover opacity-40" />
+    ) : null}
     <div className="relative z-10">
       <h1 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter">{seccion.contenido_json?.titulo || evento.nombre}</h1>
       {evento.fecha_evento && <p className="mt-4 text-xl">{new Date(evento.fecha_evento).toLocaleDateString()}</p>}

@@ -65,7 +65,7 @@ export default async function EventoLandingPage({ params }: { params: Promise<{ 
 
       <div id="comprar" className="py-20 bg-neutral-950">
         <div className="max-w-md mx-auto px-6">
-          <h3 className="text-white text-2xl font-bold text-center mb-8">Completar Compra</h3>
+          <h3 className="text-white text-2xl font-bold text-center mb-8">Adquirir Entradas</h3>
           <CheckoutForm eventoId={evento.id} precio={evento.precio_general} theme={{ primaryColor: '#ffffff', secondaryColor: '#888888', backgroundColor: '#000000' }} />
         </div>
       </div>

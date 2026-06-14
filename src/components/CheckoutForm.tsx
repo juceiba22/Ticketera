@@ -20,7 +20,7 @@ export default function CheckoutForm({ eventoId, precio, theme }: CheckoutFormPr
   const [nombre, setNombre] = useState('');
   const [otpCode, setOtpCode] = useState('');
   const [otpToken, setOtpToken] = useState('');
-  const [statusText, setStatusText] = useState('CONTINUAR');
+  const [statusText, setStatusText] = useState('ADQUIRIR ENTRADAS');
   const [errorMsg, setErrorMsg] = useState('');
 
   const primaryColor = theme?.primaryColor || '#ffffff';
@@ -45,7 +45,7 @@ export default function CheckoutForm({ eventoId, precio, theme }: CheckoutFormPr
     if (!validateEmail(email)) {
       setErrorMsg("El formato del email es inválido.");
       setLoading(false);
-      setStatusText('CONTINUAR');
+      setStatusText('ADQUIRIR ENTRADAS');
       return;
     }
 
@@ -61,7 +61,7 @@ export default function CheckoutForm({ eventoId, precio, theme }: CheckoutFormPr
       if (!response.ok) {
         setErrorMsg(data.error || "Hubo un error con tu solicitud.");
         setLoading(false);
-        setStatusText('CONTINUAR');
+        setStatusText('ADQUIRIR ENTRADAS');
         return;
       }
 
@@ -74,7 +74,7 @@ export default function CheckoutForm({ eventoId, precio, theme }: CheckoutFormPr
       console.error(error);
       setErrorMsg("Error enviando código.");
       setLoading(false);
-      setStatusText('CONTINUAR');
+      setStatusText('ADQUIRIR ENTRADAS');
     }
   };
 
@@ -178,7 +178,7 @@ export default function CheckoutForm({ eventoId, precio, theme }: CheckoutFormPr
           <button
             type="button"
             disabled={loading}
-            onClick={() => { setStep(1); setErrorMsg(''); setStatusText('CONTINUAR'); }}
+            onClick={() => { setStep(1); setErrorMsg(''); setStatusText('ADQUIRIR ENTRADAS'); }}
             className="w-full py-2 mt-2 bg-transparent text-neutral-500 text-sm hover:text-white transition-colors disabled:opacity-50"
           >
             Volver atrás

@@ -31,6 +31,11 @@ export async function POST(req: Request) {
       .single();
 
     if (eventoError || !evento) {
+      console.error('[API send-code] Evento no encontrado o error en query:', {
+        eventoId,
+        eventoError: eventoError ? { message: eventoError.message, details: eventoError.details, hint: eventoError.hint, code: eventoError.code } : null,
+        hasEvento: !!evento
+      });
       return NextResponse.json({ error: 'Evento no encontrado' }, { status: 404 });
     }
 
