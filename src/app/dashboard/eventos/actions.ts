@@ -56,6 +56,17 @@ export async function createEvento(formData: FormData) {
 export async function updateEvento(formData: FormData) {
   const supabase = await createClient()
 
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const { data: productora } = await supabase
+    .from('productoras')
+    .select('id')
+    .eq('auth_user_id', user.id)
+    .single()
+
+  if (!productora) throw new Error('Unauthorized')
+
   const id = formData.get('id') as string
   const nombre = formData.get('nombre') as string
   const slug = formData.get('slug') as string
@@ -79,6 +90,7 @@ export async function updateEvento(formData: FormData) {
       estado
     })
     .eq('id', id)
+    .eq('productora_id', productora.id)
 
   if (error) {
     console.error(error)
@@ -92,9 +104,25 @@ export async function updateEvento(formData: FormData) {
 
 export async function deleteEvento(formData: FormData) {
   const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const { data: productora } = await supabase
+    .from('productoras')
+    .select('id')
+    .eq('auth_user_id', user.id)
+    .single()
+
+  if (!productora) throw new Error('Unauthorized')
+
   const id = formData.get('id') as string
 
-  await supabase.from('eventos').delete().eq('id', id)
+  await supabase
+    .from('eventos')
+    .delete()
+    .eq('id', id)
+    .eq('productora_id', productora.id)
 
   revalidatePath('/dashboard')
   redirect('/dashboard')

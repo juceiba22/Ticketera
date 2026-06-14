@@ -11,11 +11,25 @@ export const dynamic = 'force-dynamic';
 export default async function ArtistasPage({ params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient()
   const { id } = await params
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return null
+
+  const { data: productora } = await supabase
+    .from('productoras')
+    .select('id')
+    .eq('auth_user_id', user.id)
+    .single()
+
+  if (!productora) {
+    notFound()
+  }
   
   const { data: evento, error } = await supabase
     .from('eventos')
     .select('id, nombre, slug')
     .eq('id', id)
+    .eq('productora_id', productora.id)
     .single()
 
   if (error || !evento) {

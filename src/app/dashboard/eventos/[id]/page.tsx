@@ -12,11 +12,25 @@ export default async function EditEventoPage({ params, searchParams }: { params:
   const supabase = await createClient()
   const resolvedParams = await params
   const resolvedSearchParams = await searchParams
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return null
+
+  const { data: productora } = await supabase
+    .from('productoras')
+    .select('id')
+    .eq('auth_user_id', user.id)
+    .single()
+
+  if (!productora) {
+    notFound()
+  }
   
   const { data: evento, error } = await supabase
     .from('eventos')
     .select('*')
     .eq('id', resolvedParams.id)
+    .eq('productora_id', productora.id)
     .single()
 
   if (error || !evento) {

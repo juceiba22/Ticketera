@@ -21,10 +21,23 @@ export const dynamic = 'force-dynamic';
 export default async function DashboardPage() {
   const supabase = await createClient()
 
-  // Al usar el cliente con la sesión del usuario, RLS filtra automáticamente los eventos.
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return null
+
+  const { data: productora } = await supabase
+    .from('productoras')
+    .select('id')
+    .eq('auth_user_id', user.id)
+    .single()
+
+  if (!productora) {
+    return <div className="text-red-500">Error: Productora no encontrada para el usuario actual.</div>
+  }
+
   const { data: eventos, error: eventosError } = await supabase
     .from('eventos')
     .select('id, nombre, fecha_evento, estado, precio_general, slug, tickets(id, monto)')
+    .eq('productora_id', productora.id)
     .order('created_at', { ascending: false })
 
   if (eventosError) {
