@@ -136,6 +136,12 @@ export default async function VentasPage({ params }: { params: Promise<{ id: str
           </table>
         </div>
       </div>
+
+      <div className="pt-6 border-t border-neutral-800 flex justify-end">
+        <button disabled className="px-6 py-3 bg-neutral-900 text-neutral-500 border border-neutral-800 font-semibold rounded-xl cursor-not-allowed opacity-50">
+          Guardar Cambios
+        </button>
+      </div>
     </div>
   )
 }

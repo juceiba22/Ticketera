@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { addSeccion, deleteSeccion, moveSeccion, toggleSeccionVisibility, updateSeccion, updateTheme } from './actions'
 import { ArrowDown, ArrowUp, Eye, EyeOff, Trash2 } from 'lucide-react'
+import SubmitButton from '@/components/ui/SubmitButton'
 
 export const dynamic = 'force-dynamic';
 
@@ -87,9 +88,9 @@ export default async function LandingBuilderPage({ params }: { params: Promise<{
                   ))}
                 </select>
               </div>
-              <button type="submit" className="w-full py-2 bg-neutral-800 text-white font-medium rounded-xl hover:bg-neutral-700 transition-colors">
-                Aplicar Tema
-              </button>
+              <SubmitButton className="w-full py-2 bg-neutral-800 text-white font-medium rounded-xl hover:bg-neutral-700 transition-colors">
+                Guardar Cambios
+              </SubmitButton>
             </form>
           </div>
 
@@ -105,9 +106,9 @@ export default async function LandingBuilderPage({ params }: { params: Promise<{
                   ))}
                 </select>
               </div>
-              <button type="submit" className="w-full py-2 bg-white text-black font-medium rounded-xl hover:bg-neutral-200 transition-colors">
+              <SubmitButton loadingText="Agregando..." className="w-full py-2 bg-white text-black font-medium rounded-xl hover:bg-neutral-200 transition-colors">
                 + Agregar
-              </button>
+              </SubmitButton>
             </form>
           </div>
         </div>
@@ -172,7 +173,7 @@ export default async function LandingBuilderPage({ params }: { params: Promise<{
                 )}
                 
                 <div className="flex justify-end pt-2">
-                  <button type="submit" className="px-4 py-1.5 bg-neutral-800 text-white text-sm font-medium rounded hover:bg-neutral-700 transition-colors">Guardar Contenido</button>
+                  <SubmitButton className="px-4 py-1.5 bg-neutral-800 text-white text-sm font-medium rounded hover:bg-neutral-700 transition-colors">Guardar Cambios</SubmitButton>
                 </div>
               </form>
             </div>

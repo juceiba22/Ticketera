@@ -5,6 +5,7 @@ import { addArtista, deleteArtista, editArtista } from './actions'
 import { Trash2 } from 'lucide-react'
 import ArtistImageUploader from './ArtistImageUploader'
 import ConfirmButton from '@/components/ui/ConfirmButton'
+import SubmitButton from '@/components/ui/SubmitButton'
 
 export const dynamic = 'force-dynamic';
 
@@ -108,7 +109,7 @@ export default async function ArtistasPage({ params }: { params: Promise<{ id: s
                   confirmMessage={`¿Estás seguro que deseas eliminar a ${artista.nombre}?`}
                   confirmText="Eliminar"
                 />
-                <button type="submit" className="px-6 py-2 bg-white text-black font-semibold rounded-lg hover:bg-neutral-200 transition-colors">Guardar</button>
+                <SubmitButton className="px-6 py-2 bg-white text-black font-semibold rounded-lg hover:bg-neutral-200 transition-colors">Guardar Cambios</SubmitButton>
               </div>
             </form>
           ))}
@@ -142,9 +143,9 @@ export default async function ArtistasPage({ params }: { params: Promise<{ id: s
             </div>
             
             <div className="flex justify-end pt-3">
-              <button type="submit" className="px-6 py-2 bg-white text-black font-semibold rounded-lg hover:bg-neutral-200 transition-colors">
+              <SubmitButton loadingText="Agregando..." className="px-6 py-2 bg-white text-black font-semibold rounded-lg hover:bg-neutral-200 transition-colors">
                 Agregar Artista
-              </button>
+              </SubmitButton>
             </div>
           </form>
         </div>
