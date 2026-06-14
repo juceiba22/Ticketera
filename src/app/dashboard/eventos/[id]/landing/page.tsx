@@ -8,7 +8,7 @@ import SubmitButton from '@/components/ui/SubmitButton'
 export const dynamic = 'force-dynamic';
 
 const AVAILABLE_THEMES = ['dark', 'rock', 'electronic', 'festival', 'corporate']
-const AVAILABLE_SECTIONS = ['hero', 'lineup', 'tickets', 'galeria', 'sponsors', 'faq', 'contacto']
+const AVAILABLE_SECTIONS = ['hero', 'lineup', 'tickets', 'galeria', 'sponsors', 'faq', 'contacto', 'alias']
 
 export default async function LandingBuilderPage({ params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient()
@@ -165,10 +165,10 @@ export default async function LandingBuilderPage({ params }: { params: Promise<{
                   <input name="titulo" type="text" defaultValue={seccion.contenido_json?.titulo || ''} className="w-full px-3 py-2 bg-neutral-900 rounded-lg border border-neutral-800 focus:outline-none focus:ring-1 text-white text-sm" />
                 </div>
                 
-                {['faq', 'contacto', 'hero'].includes(seccion.tipo) && (
+                {['faq', 'contacto', 'hero', 'alias'].includes(seccion.tipo) && (
                   <div>
                     <label className="block text-xs font-medium text-neutral-500 mb-1">Texto o Contenido (Opcional)</label>
-                    <textarea name="texto" rows={2} defaultValue={seccion.contenido_json?.texto || ''} className="w-full px-3 py-2 bg-neutral-900 rounded-lg border border-neutral-800 focus:outline-none focus:ring-1 text-white text-sm"></textarea>
+                    <textarea name="texto" rows={4} defaultValue={seccion.contenido_json?.texto || ''} className="w-full px-3 py-2 bg-neutral-900 rounded-lg border border-neutral-800 focus:outline-none focus:ring-1 text-white text-sm"></textarea>
                   </div>
                 )}
                 

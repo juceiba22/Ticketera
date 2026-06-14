@@ -97,6 +97,18 @@ const DefaultContacto = ({ productora, seccion }: SectionProps) => (
   </div>
 )
 
+const DefaultAlias = ({ seccion }: SectionProps) => (
+  <div className="py-20 bg-neutral-900 text-white px-6">
+    <div className="max-w-xl mx-auto bg-neutral-950 border border-neutral-850 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-500 to-indigo-500" />
+      <h2 className="text-2xl font-bold mb-6 text-center text-white">{seccion.contenido_json?.titulo || 'Transferí a esta cuenta'}</h2>
+      <div className="space-y-4 text-neutral-300 font-light whitespace-pre-line text-center">
+        {seccion.contenido_json?.texto || 'Datos de la cuenta...'}
+      </div>
+    </div>
+  </div>
+)
+
 // The registry structure
 export const THEMES: Record<string, Record<string, React.FC<SectionProps>>> = {
   dark: {
@@ -105,6 +117,7 @@ export const THEMES: Record<string, Record<string, React.FC<SectionProps>>> = {
     tickets: DefaultTickets,
     faq: DefaultFAQ,
     contacto: DefaultContacto,
+    alias: DefaultAlias,
   },
   // In a real app we would import custom components for each theme.
   // For Sprint 3, we will reuse the defaults but with some tailwind overrides if we wanted, 
